@@ -1,22 +1,27 @@
 const express = require("express");
 const app = express();
 const PORT = 8080;
+const fs = require('fs');
 
+// Parse request body as json
 app.use( express.json() );
 
+// Start listening at specified port
 app.listen(
   PORT,
   () => console.log(`started api (endpoint baseURI: http://localhost:${PORT}/)`)
 );
 
+// Respond to "GET /articles HTTP/1.1"
 app.get("/articles", (req, res) => {
-  res.status(200).send({
-    title: "テスト記事",
-    postdate: "2021-09-20",
-    content: "記事本文"
-  })
+
+  const jsonObject = JSON.parse(fs.readFileSync("./articles_data.json", "utf8"));
+
+  res.status(200).send(jsonObject);
+  
 });
 
+// Respond to "POST /create/123 HTTP/1.1"
 app.post(("/create/:id"), (req, res) => {
   
   const { id } = req.params;
@@ -29,6 +34,9 @@ app.post(("/create/:id"), (req, res) => {
     res.status(400).send({ message: "Content is empty." });
   }
 
+  // TODO: create article object and append it to json
+
   res.send({ "message": "Successfully created." });
+
 });
 
