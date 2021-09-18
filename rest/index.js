@@ -36,7 +36,7 @@ app.post(("/create/:id"), (req, res) => {
 
   // TODO: create article object and append it to json
 
-  res.send({ "message": "Successfully created." });
+  res.status(201).send({ message: "Successfully created." });
 
 });
 
